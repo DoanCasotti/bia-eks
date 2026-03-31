@@ -1,0 +1,9 @@
+# Dependências do Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+
+# Arquivos sensíveis — NUNCA commitar
+.env
+*.env

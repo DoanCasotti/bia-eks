@@ -1,0 +1,8 @@
+aws_region     = "us-east-1"
+cluster_name   = "bia-eks-cluster"
+db_name        = "biadb"
+ecr_repo_name  = "bia"
+domain         = "projeto-aws.com.br"
+app_subdomain  = "bia-eks.projeto-aws.com.br"
+s3_state_bucket = "bia-eks-terraform-state"
+# db_password => passar via: export TF_VAR_db_password="sua_senha"
