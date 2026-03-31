@@ -1,19 +1,4 @@
-resource "kubernetes_service_v1" "bia" {
-  metadata {
-    name      = "bia"
-    namespace = "default"
-  }
-
-  spec {
-    type     = "NodePort"
-    selector = { app = "bia" }
-
-    port {
-      port        = 8080
-      target_port = 8080
-      protocol    = "TCP"
-    }
-  }
-
-  depends_on = [kubernetes_deployment_v1.bia]
-}
+# ATENÇÃO: O Service da aplicação BIA é gerenciado exclusivamente pelo Argo CD via GitOps.
+# Repositório GitOps: https://github.com/DoanCasotti/bia-eks (path: k8s/.)
+#
+# O Terraform NÃO deve criar o Service para evitar conflito de reconciliação com o Argo CD.

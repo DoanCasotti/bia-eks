@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bia
+  namespace: default
+  labels:
+    app: bia
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bia
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: bia
+    spec:
+      containers:
+        - name: bia
+          image: IMAGE_PLACEHOLDER
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: bia-db-secret
+                  key: DB_USER
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: bia-db-secret
+                  key: DB_PWD
+            - name: DB_HOST
+              value: DB_HOST_PLACEHOLDER
+            - name: DB_PORT
+              value: "5432"
