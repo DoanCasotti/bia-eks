@@ -35,3 +35,8 @@ variable "app_subdomain" {
 variable "s3_state_bucket" {
   default = "bia-eks-terraform-state"
 }
+
+variable "github_token" {
+  description = "GitHub token para o CodeBuild atualizar o repositório GitOps. Passar via TF_VAR_github_token"
+  sensitive   = true
+}
