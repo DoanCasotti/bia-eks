@@ -1,3 +1,7 @@
+# Este resource só pode ser aplicado APÓS o cluster EKS existir e o Argo CD estar instalado.
+# Aplicar separadamente com:
+#   terraform apply -target=kubernetes_manifest.argocd_app_bia
+
 resource "kubernetes_manifest" "argocd_app_bia" {
   manifest = {
     apiVersion = "argoproj.io/v1alpha1"
