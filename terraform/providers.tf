@@ -18,8 +18,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.aws_region
-  profile = "doan-gui"
+  region = var.aws_region
 }
 
 provider "kubernetes" {

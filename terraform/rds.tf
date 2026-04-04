@@ -33,7 +33,7 @@ resource "aws_db_instance" "bia" {
   engine_version    = "15"
   instance_class    = "db.t3.micro"
   allocated_storage = 20
-  storage_type      = "gp2"
+  storage_type      = "gp3"
 
   db_name  = var.db_name
   username = var.db_user

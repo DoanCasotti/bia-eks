@@ -1,0 +1,36 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Fazendo login no ECR...      
+      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - REPOSITORY_URI=$ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/bia
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:-latest}
+  build:
+    commands:
+      - echo Build iniciado em `date`
+      - echo Gerando imagem da BIA...
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build finalizado com sucesso em `date`
+      - echo Fazendo push da imagem para o ECR...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Atualizando tag da imagem no repositorio GitOps...
+      - GITHUB_TOKEN=$(aws secretsmanager get-secret-value --secret-id github/token --query SecretString --output text)
+      - git clone https://x-access-token:${GITHUB_TOKEN}@github.com/DoanCasotti/bia-eks.git /tmp/bia-eks
+      - sed -i "s|image: .*dkr.ecr.*|image: $REPOSITORY_URI:$IMAGE_TAG|" /tmp/bia-eks/k8s/deployment.yaml
+      - cd /tmp/bia-eks
+      - git config user.email "codebuild@bia"
+      - git config user.name "CodeBuild"
+      - git add k8s/deployment.yaml
+      - git commit -m "ci: atualiza imagem para $IMAGE_TAG"
+      - git push
+artifacts:
+  files:
+    - "**/*"

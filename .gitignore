@@ -1,0 +1,5 @@
+bia/node_modules/
+bia/client/node_modules/
+bia/client/build/
+print.png
+terraform/.env
