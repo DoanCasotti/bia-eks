@@ -9,7 +9,6 @@ cd "$(dirname "$0")/../terraform"
 
 echo "Lendo outputs do Terraform..."
 RDS_ENDPOINT=$(terraform output -raw rds_endpoint)
-ACM_ARN=$(terraform output -raw acm_arn)
 SUBNET_A=$(terraform output -raw subnet_public_a)
 SUBNET_B=$(terraform output -raw subnet_public_b)
 ECR_URL=$(terraform output -raw ecr_repository_url)
@@ -21,7 +20,6 @@ sed -i "s|IMAGE_PLACEHOLDER|${ECR_URL}:latest|" "$K8S_DIR/deployment.yaml"
 sed -i "s|DB_HOST_PLACEHOLDER|${RDS_ENDPOINT}|" "$K8S_DIR/deployment.yaml"
 
 echo "Substituindo placeholders em ingress.yaml..."
-sed -i "s|ACM_ARN_PLACEHOLDER|${ACM_ARN}|" "$K8S_DIR/ingress.yaml"
 sed -i "s|SUBNET_A_PLACEHOLDER|${SUBNET_A}|" "$K8S_DIR/ingress.yaml"
 sed -i "s|SUBNET_B_PLACEHOLDER|${SUBNET_B}|" "$K8S_DIR/ingress.yaml"
 

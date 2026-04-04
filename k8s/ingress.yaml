@@ -7,16 +7,13 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: instance
     alb.ingress.kubernetes.io/group.name: bia-alb
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: ACM_ARN_PLACEHOLDER
-    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-2016-08
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/target-group-attributes: deregistration_delay.timeout_seconds=30
     alb.ingress.kubernetes.io/subnets: SUBNET_A_PLACEHOLDER,SUBNET_B_PLACEHOLDER
 spec:
   ingressClassName: alb
   rules:
-    - host: bia-eks.projeto-aws.com.br
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix

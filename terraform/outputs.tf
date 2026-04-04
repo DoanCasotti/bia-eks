@@ -3,11 +3,6 @@ output "rds_endpoint" {
   value       = aws_db_instance.bia.address
 }
 
-output "acm_arn" {
-  description = "ACM_ARN_PLACEHOLDER → ingress.yaml"
-  value       = data.aws_acm_certificate.bia.arn
-}
-
 output "subnet_public_a" {
   description = "SUBNET_A_PLACEHOLDER → ingress.yaml"
   value       = aws_subnet.public_a.id
@@ -24,6 +19,6 @@ output "ecr_repository_url" {
 }
 
 output "alb_dns" {
-  description = "DNS do ALB — adicionar como CNAME de bia-eks.projeto-aws.com.br na Hosted Zone da conta externa"
-  value       = "Disponível após o Argo CD aplicar o Ingress. Rode: aws elbv2 describe-load-balancers --profile doan-awsfree --query 'LoadBalancers[?contains(LoadBalancerName, `bia`)].DNSName' --output text"
+  description = "DNS do ALB para acesso direto via HTTP"
+  value       = "Disponível após o Argo CD aplicar o Ingress. Rode: aws elbv2 describe-load-balancers --profile doan-awsfree --query 'LoadBalancers[?contains(LoadBalancerName, `k8s-bia`)].DNSName' --output text"
 }
