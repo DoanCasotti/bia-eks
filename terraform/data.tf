@@ -17,9 +17,3 @@ data "aws_acm_certificate" "bia" {
   statuses    = ["ISSUED"]
   most_recent = true
 }
-
-# Hosted Zone existente na conta (somente leitura)
-data "aws_route53_zone" "bia" {
-  name         = var.domain
-  private_zone = false
-}
